@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Waves, LayoutDashboard, Library, Heart, Sparkles } from "lucide-react";
+import { LayoutDashboard, Library, Heart, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
