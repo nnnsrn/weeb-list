@@ -32,7 +32,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
