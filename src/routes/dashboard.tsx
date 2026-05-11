@@ -39,8 +39,8 @@ function Dashboard() {
     <div className="px-5 md:px-10 py-8 md:py-12 space-y-10 max-w-7xl mx-auto">
       <header className="flex flex-wrap items-end justify-between gap-4 animate-fade-in-up">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-primary">Welcome back</p>
-          <h1 className="text-3xl md:text-4xl font-bold gradient-text mt-2">Your Ocean</h1>
+          <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">Welcome back</p>
+          <img src="/logo.png" alt="NinaList" className="h-16 sm:h-20 w-auto rounded-xl shadow-glow" />
         </div>
         <MediaFormDialog
           trigger={
