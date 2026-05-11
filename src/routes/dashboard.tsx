@@ -40,7 +40,7 @@ function Dashboard() {
       <header className="flex flex-wrap items-end justify-between gap-4 animate-fade-in-up">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">Welcome back</p>
-          <img src="/logo.png" alt="NinaList" className="h-16 sm:h-20 w-auto rounded-xl shadow-glow" />
+          <img src="/logo-full.png" alt="NinaList" className="h-16 sm:h-20 w-auto rounded-xl shadow-glow" />
         </div>
         <MediaFormDialog
           trigger={

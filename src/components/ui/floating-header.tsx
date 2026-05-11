@@ -34,11 +34,11 @@ export function FloatingHeader() {
       <nav className="mx-auto flex items-center justify-between p-2 px-4">
         <Link to="/" className="hover:bg-accent flex cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 duration-100">
           <div className="size-8 overflow-hidden rounded-full shrink-0 flex items-center justify-start border border-primary/20 shadow-glow">
-            <img src="/logo.png" alt="NinaList Logo" className="h-[120%] w-auto max-w-none object-left -ml-[5%]" />
+            <img src="/logo-icon.png" alt="NinaList Logo" className="h-[120%] w-auto max-w-none object-left -ml-[5%]" />
           </div>
           <p className="font-semibold text-base hidden sm:block">NinaList</p>
         </Link>
-        
+
         <div className="hidden items-center gap-1 lg:flex">
           {links.map((link) => (
             <Link
@@ -53,7 +53,7 @@ export function FloatingHeader() {
             </Link>
           ))}
         </div>
-        
+
         <div className="flex items-center gap-2">
           <Button size="sm" variant="outline" className="rounded-md hidden sm:flex">Profile</Button>
           <Sheet open={open} onOpenChange={setOpen}>

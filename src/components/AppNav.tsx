@@ -14,10 +14,8 @@ export function AppNav() {
 
   return (
     <aside className="hidden md:flex fixed left-0 top-0 h-screen w-60 flex-col gap-8 px-5 py-8 glass-strong border-r border-border z-30">
-      <Link to="/" className="flex items-center gap-2">
-        <div className="grid h-10 w-10 place-items-center rounded-xl gradient-tide shadow-glow">
-          <Waves className="h-5 w-5 text-primary-foreground" />
-        </div>
+      <Link to="/" className="flex items-center gap-3">
+        <img src="/logo-icon.png" alt="NinaList" className="h-10 w-10 rounded-xl object-cover shadow-glow" />
         <div className="leading-tight">
           <p className="text-base font-semibold gradient-text">NinaList</p>
           <p className="text-[10px] tracking-widest uppercase text-muted-foreground">Ocean of stories</p>
