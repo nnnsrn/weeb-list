@@ -1,0 +1,196 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-abyss: var(--abyss);
+  --color-deep: var(--deep);
+  --color-cyan-glow: var(--cyan-glow);
+  --color-foam: var(--foam);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Dark-first ocean theme */
+:root, .dark {
+  --radius: 0.875rem;
+
+  --abyss: oklch(0.16 0.04 245);
+  --deep: oklch(0.22 0.06 250);
+  --cyan-glow: oklch(0.78 0.16 210);
+  --foam: oklch(0.96 0.02 220);
+
+  --background: oklch(0.14 0.035 245);
+  --foreground: oklch(0.96 0.015 220);
+
+  --card: oklch(0.20 0.045 248 / 0.6);
+  --card-foreground: oklch(0.96 0.015 220);
+
+  --popover: oklch(0.18 0.04 248);
+  --popover-foreground: oklch(0.96 0.015 220);
+
+  --primary: oklch(0.78 0.16 210);
+  --primary-foreground: oklch(0.14 0.04 245);
+
+  --secondary: oklch(0.26 0.05 250);
+  --secondary-foreground: oklch(0.96 0.015 220);
+
+  --muted: oklch(0.24 0.04 250);
+  --muted-foreground: oklch(0.72 0.04 220);
+
+  --accent: oklch(0.55 0.18 220);
+  --accent-foreground: oklch(0.98 0.01 220);
+
+  --destructive: oklch(0.62 0.22 22);
+  --destructive-foreground: oklch(0.98 0.01 220);
+
+  --border: oklch(0.96 0.02 220 / 0.10);
+  --input: oklch(0.96 0.02 220 / 0.12);
+  --ring: oklch(0.78 0.16 210 / 0.6);
+
+  --sidebar: oklch(0.17 0.045 248);
+  --sidebar-foreground: oklch(0.92 0.02 220);
+  --sidebar-primary: oklch(0.78 0.16 210);
+  --sidebar-primary-foreground: oklch(0.14 0.04 245);
+  --sidebar-accent: oklch(0.24 0.05 250);
+  --sidebar-accent-foreground: oklch(0.96 0.015 220);
+  --sidebar-border: oklch(0.96 0.02 220 / 0.08);
+  --sidebar-ring: oklch(0.78 0.16 210 / 0.5);
+
+  --gradient-ocean: radial-gradient(ellipse at top, oklch(0.30 0.10 230) 0%, oklch(0.14 0.035 245) 55%, oklch(0.10 0.03 248) 100%);
+  --gradient-tide: linear-gradient(135deg, oklch(0.55 0.18 220) 0%, oklch(0.78 0.16 200) 100%);
+  --gradient-glow: radial-gradient(circle at 50% 0%, oklch(0.78 0.16 210 / 0.35), transparent 60%);
+  --shadow-glow: 0 10px 40px -12px oklch(0.78 0.16 210 / 0.45);
+  --shadow-deep: 0 20px 50px -20px oklch(0.05 0.03 245 / 0.8);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body { background-color: var(--color-background); color: var(--color-foreground); }
+  body {
+    background-image: var(--gradient-ocean);
+    background-attachment: fixed;
+    min-height: 100vh;
+    font-feature-settings: "ss01", "cv11";
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: oklch(0.20 0.045 248 / 0.45);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid oklch(0.96 0.02 220 / 0.08);
+  }
+  .glass-strong {
+    background: oklch(0.18 0.05 248 / 0.7);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid oklch(0.96 0.02 220 / 0.10);
+  }
+  .text-glow { text-shadow: 0 0 24px oklch(0.78 0.16 210 / 0.55); }
+  .gradient-tide { background-image: var(--gradient-tide); }
+  .gradient-text {
+    background: linear-gradient(135deg, oklch(0.96 0.02 220) 0%, oklch(0.78 0.16 200) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-deep { box-shadow: var(--shadow-deep); }
+}
+
+/* Ocean ambience: bubbles and waves */
+@keyframes bubble-rise {
+  0% { transform: translateY(0) scale(0.9); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
+}
+@keyframes wave-shift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+}
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.78 0.16 210 / 0.4); }
+  50% { box-shadow: 0 0 0 14px oklch(0.78 0.16 210 / 0); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up { animation: fade-in-up 0.5s ease-out both; }
+.animate-float { animation: float-soft 4s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2.4s ease-out infinite; }
+
+.bubble {
+  position: absolute;
+  bottom: -40px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, oklch(0.96 0.02 220 / 0.35), oklch(0.78 0.16 210 / 0.05));
+  border: 1px solid oklch(0.96 0.02 220 / 0.18);
+  animation: bubble-rise linear infinite;
+  pointer-events: none;
+}
+
+/* Floating sea creatures */
+@keyframes drift-right {
+  0% { transform: translateX(-12vw); }
+  100% { transform: translateX(112vw); }
+}
+@keyframes drift-left {
+  0% { transform: translateX(112vw) scaleX(-1); }
+  100% { transform: translateX(-12vw) scaleX(-1); }
+}
+@keyframes sea-bob {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-14px) rotate(3deg); }
+}
+.sea-creature {
+  position: absolute;
+  left: 0;
+  will-change: transform;
+  filter: drop-shadow(0 0 12px oklch(0.78 0.16 210 / 0.45));
+  opacity: 0.75;
+}
+.sea-creature.drift-right { animation: drift-right linear infinite; }
+.sea-creature.drift-left { animation: drift-left linear infinite; }
+.sea-bob { animation: sea-bob 4s ease-in-out infinite; display: inline-block; }
