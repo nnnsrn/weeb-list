@@ -1,16 +1,16 @@
-# Weeb List 🎌
+# Weeb List 
 
-A personal anime tracking application with a clean, professional, and premium design aesthetic. Built to help you keep track of your favorite anime, what you're currently watching, and your future watchlists.
+A personal anime/manga/manhwa/manhua tracking application with a clean, professional, and premium design aesthetic. Built to help me keep track of my favorites, what I'm currently watching, and my future watchlists.
 
-## ✨ Features
-- **Premium UI:** Features custom-styled, flattened UI components designed for a modern look and feel.
-- **Anime Library:** Browse, search, and manage your anime collection.
-- **Progress Tracking:** Keep track of the episodes you've watched.
+## Features
+- **UI:** Features custom-styled, flattened UI components designed for a modern look and feel.
+- **Anime Library:** Browse, search, and manage collection.
+- **Progress Tracking:** Keep track of the episodes I've watched/read.
 - **Responsive Design:** Works smoothly across desktop and mobile devices.
 
-## 🛠️ Tech Stack
+## Tech Stack
 - **Frontend Framework:** React, Vite, TanStack Start/Router
-- **Styling:** Tailwind CSS, Framer Motion, custom premium UI components
+- **Styling:** Tailwind CSS, Framer Motion, custom UI components
 - **Backend & Database:** Supabase
 
 ## 🚀 Getting Started
