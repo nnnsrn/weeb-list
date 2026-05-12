@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Eye } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 
 export interface HoverCardData {
   id: number;
@@ -85,12 +86,11 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({ data }) => {
 
         {/* CTA Button */}
         <div className="pt-2">
-          <Button
-            className="w-full group/btn"
-            variant="default"
-          >
-            <span>Learn More</span>
-            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+          <Button asChild className="w-full group/btn" variant="default">
+            <Link to="/discover" search={{ q: data.title }}>
+              <span>Learn More</span>
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+            </Link>
           </Button>
         </div>
       </CardContent>
