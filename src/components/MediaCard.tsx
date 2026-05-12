@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, Plus } from "lucide-react";
+import { Heart, Plus, Trash2 } from "lucide-react";
 import { SegmentedProgress } from "@/components/ui/progress-bar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,14 +8,28 @@ import {
   PROGRESS_NOUN,
   STATUS_LABEL,
   TYPE_LABEL,
+  deleteEntry,
   incrementProgress,
   updateEntry,
 } from "@/lib/media";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function MediaCard({ entry }: { entry: MediaEntry }) {
   const qc = useQueryClient();
+  const { isOwner } = useAuth();
 
   const inc = useMutation({
     mutationFn: () => incrementProgress(entry),
@@ -29,6 +43,15 @@ export function MediaCard({ entry }: { entry: MediaEntry }) {
   const fav = useMutation({
     mutationFn: () => updateEntry(entry.id, { is_favorite: !entry.is_favorite }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["entries"] }),
+  });
+
+  const del = useMutation({
+    mutationFn: () => deleteEntry(entry.id),
+    onSuccess: () => {
+      toast.success("Removed");
+      qc.invalidateQueries({ queryKey: ["entries"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const pct =
@@ -64,15 +87,46 @@ export function MediaCard({ entry }: { entry: MediaEntry }) {
         </div>
       </Link>
 
-      <button
-        onClick={() => fav.mutate()}
-        aria-label="Toggle favorite"
-        className="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-md bg-background/80 backdrop-blur-sm transition-colors hover:text-primary border border-border"
-      >
-        <Heart
-          className={`h-4 w-4 ${entry.is_favorite ? "fill-primary text-primary" : "text-foreground"}`}
-        />
-      </button>
+      {isOwner && (
+        <div className="absolute top-2 right-2 flex flex-col gap-1.5">
+          <button
+            onClick={() => fav.mutate()}
+            aria-label="Toggle favorite"
+            className="grid h-8 w-8 place-items-center rounded-md bg-background/80 backdrop-blur-sm transition-colors hover:text-primary border border-border"
+          >
+            <Heart
+              className={`h-4 w-4 ${entry.is_favorite ? "fill-primary text-primary" : "text-foreground"}`}
+            />
+          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                aria-label="Delete entry"
+                className="grid h-8 w-8 place-items-center rounded-md bg-background/80 backdrop-blur-sm transition-colors hover:text-destructive border border-border"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete “{entry.title}”?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently remove it from your library. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  onClick={() => del.mutate()}
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      )}
 
       <div className="relative -mt-6 px-3 pb-3 space-y-3 flex-1 flex flex-col justify-end">
         <div>
@@ -92,15 +146,17 @@ export function MediaCard({ entry }: { entry: MediaEntry }) {
           {entry.rating != null && (
             <Badge variant="secondary" className="text-[10px]">★ {entry.rating}</Badge>
           )}
-          <Button
-            size="sm"
-            variant="default"
-            className="ml-auto h-7 px-3 text-[11px] font-semibold"
-            onClick={() => inc.mutate()}
-            disabled={inc.isPending}
-          >
-            <Plus className="h-3 w-3 mr-1" /> Add
-          </Button>
+          {isOwner && (
+            <Button
+              size="sm"
+              variant="default"
+              className="ml-auto h-7 px-3 text-[11px] font-semibold"
+              onClick={() => inc.mutate()}
+              disabled={inc.isPending}
+            >
+              <Plus className="h-3 w-3 mr-1" /> Add
+            </Button>
+          )}
         </div>
       </div>
     </div>

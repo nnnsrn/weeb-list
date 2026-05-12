@@ -15,6 +15,18 @@ import {
   updateEntry,
 } from "@/lib/media";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/library/$id")({
   component: EntryDetail,
@@ -24,6 +36,7 @@ function EntryDetail() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { isOwner } = useAuth();
 
   const all = useQuery({ queryKey: ["entries"], queryFn: fetchEntries });
   const entry = all.data?.find((e) => e.id === id);
@@ -100,32 +113,49 @@ function EntryDetail() {
               </span>
             </div>
             <Progress value={pct} className="h-2" />
-            <div className="flex flex-wrap gap-2 pt-1">
-              <Button variant="tide" onClick={() => inc.mutate()} disabled={inc.isPending}>
-                +1 {PROGRESS_NOUN[entry.type]}
-              </Button>
-              <Button variant="glass" onClick={() => fav.mutate()}>
-                <Heart className={`h-4 w-4 ${entry.is_favorite ? "fill-primary text-primary" : ""}`} />
-                {entry.is_favorite ? "Favorited" : "Favorite"}
-              </Button>
-              <MediaFormDialog
-                entry={entry}
-                trigger={
-                  <Button variant="glass">
-                    <Pencil className="h-4 w-4" /> Edit
-                  </Button>
-                }
-              />
-              <Button
-                variant="ghost"
-                className="text-destructive hover:text-destructive"
-                onClick={() => {
-                  if (confirm("Delete this entry?")) del.mutate();
-                }}
-              >
-                <Trash2 className="h-4 w-4" /> Delete
-              </Button>
-            </div>
+            {isOwner && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                <Button variant="tide" onClick={() => inc.mutate()} disabled={inc.isPending}>
+                  +1 {PROGRESS_NOUN[entry.type]}
+                </Button>
+                <Button variant="glass" onClick={() => fav.mutate()}>
+                  <Heart className={`h-4 w-4 ${entry.is_favorite ? "fill-primary text-primary" : ""}`} />
+                  {entry.is_favorite ? "Favorited" : "Favorite"}
+                </Button>
+                <MediaFormDialog
+                  entry={entry}
+                  trigger={
+                    <Button variant="glass">
+                      <Pencil className="h-4 w-4" /> Edit
+                    </Button>
+                  }
+                />
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" className="text-destructive hover:text-destructive">
+                      <Trash2 className="h-4 w-4" /> Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete “{entry.title}”?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently remove this entry from your library. This cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        onClick={() => del.mutate()}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">

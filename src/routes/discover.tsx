@@ -8,8 +8,10 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { jikanSearch, jikanToEntry } from "@/lib/jikan";
 import { TYPE_LABEL, type MediaType, createEntry } from "@/lib/media";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/discover")({
+  validateSearch: (s: Record<string, unknown>) => ({ q: typeof s.q === "string" ? s.q : undefined }),
   head: () => ({
     meta: [
       { title: "Discover — NinaList" },
@@ -21,9 +23,11 @@ export const Route = createFileRoute("/discover")({
 
 function Discover() {
   const qc = useQueryClient();
+  const { isOwner } = useAuth();
+  const search_params = Route.useSearch();
   const [type, setType] = useState<MediaType>("anime");
-  const [q, setQ] = useState("");
-  const [submitted, setSubmitted] = useState("");
+  const [q, setQ] = useState((search_params as { q?: string }).q ?? "");
+  const [submitted, setSubmitted] = useState((search_params as { q?: string }).q ?? "");
 
   const search = useQuery({
     queryKey: ["jikan", type, submitted],
@@ -105,15 +109,19 @@ function Discover() {
                   {type === "anime" ? `${item.episodes ?? "?"} ep` : `${item.chapters ?? "?"} ch`}
                   {item.score ? ` · ★ ${item.score}` : ""}
                 </p>
-                <Button
-                  size="sm"
-                  variant="tide"
-                  className="w-full h-8 text-xs"
-                  onClick={() => add.mutate(jikanToEntry(item, type))}
-                  disabled={add.isPending}
-                >
-                  Add to library
-                </Button>
+                {isOwner ? (
+                  <Button
+                    size="sm"
+                    variant="tide"
+                    className="w-full h-8 text-xs"
+                    onClick={() => add.mutate(jikanToEntry(item, type))}
+                    disabled={add.isPending}
+                  >
+                    Add to library
+                  </Button>
+                ) : (
+                  <p className="text-[10px] text-center text-muted-foreground italic">Sign in as owner to add</p>
+                )}
               </div>
             </div>
           ))}

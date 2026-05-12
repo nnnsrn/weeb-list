@@ -21,6 +21,7 @@ import {
   type MediaStatus,
   type MediaType,
 } from "@/lib/media";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/library")({
   head: () => ({
@@ -35,6 +36,7 @@ export const Route = createFileRoute("/library")({
 type Sort = "updated" | "rating" | "title";
 
 function LibraryPage() {
+  const { isOwner } = useAuth();
   const entries = useQuery({ queryKey: ["entries"], queryFn: fetchEntries });
   const [type, setType] = useState<MediaType | "all">("all");
   const [status, setStatus] = useState<MediaStatus | "all">("all");
@@ -67,13 +69,15 @@ function LibraryPage() {
           <p className="text-xs uppercase tracking-[0.3em] text-primary">Collection</p>
           <h1 className="text-3xl md:text-4xl font-bold gradient-text mt-2">Library</h1>
         </div>
-        <MediaFormDialog
-          trigger={
-            <Button variant="tide" size="lg">
-              <Plus className="h-4 w-4" /> Add entry
-            </Button>
-          }
-        />
+        {isOwner && (
+          <MediaFormDialog
+            trigger={
+              <Button variant="tide" size="lg">
+                <Plus className="h-4 w-4" /> Add entry
+              </Button>
+            }
+          />
+        )}
       </header>
 
       <div className="bg-card border border-border rounded-md p-4 space-y-4 shadow-sm">
