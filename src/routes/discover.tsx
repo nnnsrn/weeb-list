@@ -109,15 +109,19 @@ function Discover() {
                   {type === "anime" ? `${item.episodes ?? "?"} ep` : `${item.chapters ?? "?"} ch`}
                   {item.score ? ` · ★ ${item.score}` : ""}
                 </p>
-                <Button
-                  size="sm"
-                  variant="tide"
-                  className="w-full h-8 text-xs"
-                  onClick={() => add.mutate(jikanToEntry(item, type))}
-                  disabled={add.isPending}
-                >
-                  Add to library
-                </Button>
+                {isOwner ? (
+                  <Button
+                    size="sm"
+                    variant="tide"
+                    className="w-full h-8 text-xs"
+                    onClick={() => add.mutate(jikanToEntry(item, type))}
+                    disabled={add.isPending}
+                  >
+                    Add to library
+                  </Button>
+                ) : (
+                  <p className="text-[10px] text-center text-muted-foreground italic">Sign in as owner to add</p>
+                )}
               </div>
             </div>
           ))}
