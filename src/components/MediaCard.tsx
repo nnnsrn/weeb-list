@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, Plus } from "lucide-react";
+import { Heart, Plus, Trash2 } from "lucide-react";
 import { SegmentedProgress } from "@/components/ui/progress-bar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,14 +8,28 @@ import {
   PROGRESS_NOUN,
   STATUS_LABEL,
   TYPE_LABEL,
+  deleteEntry,
   incrementProgress,
   updateEntry,
 } from "@/lib/media";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function MediaCard({ entry }: { entry: MediaEntry }) {
   const qc = useQueryClient();
+  const { isOwner } = useAuth();
 
   const inc = useMutation({
     mutationFn: () => incrementProgress(entry),
@@ -29,6 +43,15 @@ export function MediaCard({ entry }: { entry: MediaEntry }) {
   const fav = useMutation({
     mutationFn: () => updateEntry(entry.id, { is_favorite: !entry.is_favorite }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["entries"] }),
+  });
+
+  const del = useMutation({
+    mutationFn: () => deleteEntry(entry.id),
+    onSuccess: () => {
+      toast.success("Removed");
+      qc.invalidateQueries({ queryKey: ["entries"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const pct =
