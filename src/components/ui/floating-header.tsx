@@ -1,12 +1,20 @@
 import React from 'react';
-import { Grid2x2PlusIcon, MenuIcon } from 'lucide-react';
+import { MenuIcon, LogIn, LogOut } from 'lucide-react';
 import { Sheet, SheetContent, SheetFooter, SheetTrigger } from '@/components/ui/sheet';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
+import { useAuth } from '@/hooks/use-auth';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export function FloatingHeader() {
   const [open, setOpen] = React.useState(false);
+  const { user, isOwner } = useAuth();
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("Signed out");
+  };
 
   const links = [
     {
@@ -55,7 +63,15 @@ export function FloatingHeader() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button size="sm" variant="outline" className="rounded-md hidden sm:flex">Profile</Button>
+          {user ? (
+            <Button size="sm" variant="outline" className="rounded-md hidden sm:flex" onClick={signOut}>
+              <LogOut className="h-3.5 w-3.5" /> {isOwner ? "Owner" : "Sign out"}
+            </Button>
+          ) : (
+            <Link to="/auth" className={buttonVariants({ size: 'sm', variant: 'outline', className: 'rounded-md hidden sm:flex' })}>
+              <LogIn className="h-3.5 w-3.5" /> Sign in
+            </Link>
+          )}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button
@@ -89,7 +105,11 @@ export function FloatingHeader() {
                 ))}
               </div>
               <SheetFooter className="mt-auto px-4 pb-8">
-                <Button variant="outline" className="w-full">Profile</Button>
+                {user ? (
+                  <Button variant="outline" className="w-full" onClick={signOut}>Sign out</Button>
+                ) : (
+                  <Link to="/auth" onClick={() => setOpen(false)} className={buttonVariants({ variant: 'outline', className: 'w-full' })}>Sign in</Link>
+                )}
               </SheetFooter>
             </SheetContent>
           </Sheet>
