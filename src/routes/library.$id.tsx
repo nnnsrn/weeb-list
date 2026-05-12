@@ -15,6 +15,18 @@ import {
   updateEntry,
 } from "@/lib/media";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/library/$id")({
   component: EntryDetail,
