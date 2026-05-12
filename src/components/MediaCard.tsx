@@ -146,15 +146,17 @@ export function MediaCard({ entry }: { entry: MediaEntry }) {
           {entry.rating != null && (
             <Badge variant="secondary" className="text-[10px]">★ {entry.rating}</Badge>
           )}
-          <Button
-            size="sm"
-            variant="default"
-            className="ml-auto h-7 px-3 text-[11px] font-semibold"
-            onClick={() => inc.mutate()}
-            disabled={inc.isPending}
-          >
-            <Plus className="h-3 w-3 mr-1" /> Add
-          </Button>
+          {isOwner && (
+            <Button
+              size="sm"
+              variant="default"
+              className="ml-auto h-7 px-3 text-[11px] font-semibold"
+              onClick={() => inc.mutate()}
+              disabled={inc.isPending}
+            >
+              <Plus className="h-3 w-3 mr-1" /> Add
+            </Button>
+          )}
         </div>
       </div>
     </div>
