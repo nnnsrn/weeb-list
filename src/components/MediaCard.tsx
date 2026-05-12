@@ -87,15 +87,46 @@ export function MediaCard({ entry }: { entry: MediaEntry }) {
         </div>
       </Link>
 
-      <button
-        onClick={() => fav.mutate()}
-        aria-label="Toggle favorite"
-        className="absolute top-2 right-2 grid h-8 w-8 place-items-center rounded-md bg-background/80 backdrop-blur-sm transition-colors hover:text-primary border border-border"
-      >
-        <Heart
-          className={`h-4 w-4 ${entry.is_favorite ? "fill-primary text-primary" : "text-foreground"}`}
-        />
-      </button>
+      {isOwner && (
+        <div className="absolute top-2 right-2 flex flex-col gap-1.5">
+          <button
+            onClick={() => fav.mutate()}
+            aria-label="Toggle favorite"
+            className="grid h-8 w-8 place-items-center rounded-md bg-background/80 backdrop-blur-sm transition-colors hover:text-primary border border-border"
+          >
+            <Heart
+              className={`h-4 w-4 ${entry.is_favorite ? "fill-primary text-primary" : "text-foreground"}`}
+            />
+          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                aria-label="Delete entry"
+                className="grid h-8 w-8 place-items-center rounded-md bg-background/80 backdrop-blur-sm transition-colors hover:text-destructive border border-border"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete “{entry.title}”?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently remove it from your library. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  onClick={() => del.mutate()}
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      )}
 
       <div className="relative -mt-6 px-3 pb-3 space-y-3 flex-1 flex flex-col justify-end">
         <div>
